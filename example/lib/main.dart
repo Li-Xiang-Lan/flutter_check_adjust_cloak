@@ -28,24 +28,13 @@ class _MyAppState extends State<MyApp> {
             children: [
               TextButton(
                   onPressed: ()async{
-                    var distinctId = await FlutterTbaInfo.instance.getDistinctId();
-                    var ts = DateTime.now().millisecondsSinceEpoch;
-                    var deviceModel = await FlutterTbaInfo.instance.getDeviceModel();
-                    // var bundleId = await FlutterTbaInfo.instance.getBundleId();
-                    var bundleId = "com.word.tap.quiz";
-                    var osVersion = await FlutterTbaInfo.instance.getOsVersion();
-                    var gaid = await FlutterTbaInfo.instance.getGaid();
-                    var androidId = await FlutterTbaInfo.instance.getAndroidId();
-                    var appVersion = await FlutterTbaInfo.instance.getAppVersion();
-                    var operator = await FlutterTbaInfo.instance.getOperator();
-                    var url="https://wallaby.wordtap.link/locust/bound?aden=$distinctId&twigging=$ts&brock=$deviceModel&proctor=$bundleId&bandgap=$osVersion&bengal=$gaid&wingbeat=$androidId&improper=aeolian&karyatid=$appVersion&rockaway=$operator";
-                    FlutterCheckAdjustCloak.instance.setConfigAndInit(
-                        cloakPath: url,
-                        normalModeStr: "alluvium",
-                        blackModeStr: "trigram",
-                        adjustToken: "",
-                        distinctId: distinctId
-                    );
+                    // FlutterCheckAdjustCloak.instance.setConfigAndInit(
+                    //     cloakPath: url,
+                    //     normalModeStr: "alluvium",
+                    //     blackModeStr: "trigram",
+                    //     adjustToken: "",
+                    //     distinctId: distinctId
+                    // );
                   },
                   child: const Text("init",style: TextStyle(fontSize: 20),)
               ),
