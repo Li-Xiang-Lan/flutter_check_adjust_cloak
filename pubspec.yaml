@@ -1,7 +1,7 @@
 name: flutter_check_adjust_cloak
 description: A new Flutter project.
 version: 0.0.1
-homepage:
+homepage: https://github.com/Li-Xiang-Lan/flutter_check_adjust_cloak
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -14,7 +14,6 @@ dependencies:
   adjust_sdk: 4.31.0
   dio: 5.3.3
   get_storage: 2.1.1
-  fluttertoast: 8.2.4
 
 dev_dependencies:
   flutter_test:
