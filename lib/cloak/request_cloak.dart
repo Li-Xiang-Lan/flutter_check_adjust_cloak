@@ -17,14 +17,14 @@ class RequestCloak{
   });
 
   request()async{
-    if(_requestNum>=20||getLocalCloak().isNotEmpty){
+    if(_requestNum>=20||null==localCloakIsNormalUser()){
       return;
     }
     printLogByDebug("start request cloak --> $cloakPath");
     var result = await DioManager.instance.requestGet(url: cloakPath);
     printLogByDebug("request cloak result--> $result");
     if(result.isNotEmpty&&(result==normalModeStr||result==blackModeStr)){
-      LocalStorage.write(LocalStorageKey.cloakLocalKey, result);
+      LocalStorage.write(LocalStorageKey.localCloakIsNormalUserKey, result==normalModeStr);
     }else{
       Timer.periodic(const Duration(milliseconds: 1000), (timer) {
         timer.cancel();
@@ -32,12 +32,5 @@ class RequestCloak{
         request();
       });
     }
-  }
-
-  String getLocalCloak()=>LocalStorage.read<String>(LocalStorageKey.cloakLocalKey)??"";
-
-  bool isBlack(){
-    var localCloak = getLocalCloak();
-    return localCloak.isEmpty||localCloak==blackModeStr;
   }
 }

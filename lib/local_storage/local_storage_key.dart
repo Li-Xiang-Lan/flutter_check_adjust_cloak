@@ -1,5 +1,5 @@
 class LocalStorageKey{
-  static const String cloakLocalKey="cloakLocalKey";
-  static const String adjustLocalKey="adjustLocalKey";
+  static const String localCloakIsNormalUserKey="localCloakIsNormalUserKey";
+  static const String localAdjustIsBuyUserKey="localAdjustIsBuyUserKey";
   static const String localUserType="localUserType";
 }

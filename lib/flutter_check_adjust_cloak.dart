@@ -19,7 +19,7 @@ class FlutterCheckAdjustCloak {
     required String cloakPath,
     required String normalModeStr,
     required String blackModeStr
-  }){
+  })async{
     _requestCloak=RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr);
     _requestCloak?.request();
   }
@@ -46,14 +46,11 @@ class FlutterCheckAdjustCloak {
       printLogByDebug("check type result--->local storage is true");
       return true;
     }
-    if(null==_requestCloak||null==_requestAdjust){
-      throw "Please call the setConfigAndInit method first";
-    }
-    if(_requestCloak?.isBlack()==true){
+    if(!(localCloakIsNormalUser()??false)){
       printLogByDebug("check type result--->cloak isBlack");
       return false;
     }
-    if(_requestAdjust?.isBuyUser()!=true){
+    if(!(localAdjustIsBuyUser()??false)){
       printLogByDebug("check type result--->adjust not buy user");
       return false;
     }
@@ -68,10 +65,6 @@ class FlutterCheckAdjustCloak {
       _forceBuyUser=force;
     }
   }
-
-  String getLocalCloakStr()=>_requestCloak?.getLocalCloak()??"";
-
-  String getLocalAdjustStr()=>_requestAdjust?.getLocalAdjust()??"";
 
   setAdjustListener(AdjustListener adjustListener){
     _requestAdjust?.setAdjustListener(adjustListener);

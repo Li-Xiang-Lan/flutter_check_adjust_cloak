@@ -20,17 +20,19 @@ class RequestAdjust{
   }
 
   request()async{
+    if(null!=localAdjustIsBuyUser()){
+      return;
+    }
     _adjustListener?.beforeRequestAdjust();
+    printLogByDebug("request adjust result ---> beforeRequestAdjust");
     Adjust.addSessionCallbackParameter("customer_user_id", distinctId);
     var adjustConfig = AdjustConfig(kDebugMode?"ih2pm2dr3k74":adjustToken, kDebugMode?AdjustEnvironment.sandbox:AdjustEnvironment.production);
     adjustConfig.attributionCallback=(AdjustAttribution attributionChangedData) {
       var network = attributionChangedData.network??"";
       printLogByDebug("request adjust result ---> $network");
-      if(network.isNotEmpty&&!isBuyUser()){
-        LocalStorage.write(LocalStorageKey.adjustLocalKey, network);
-        if(!network.contains("Organic")){
-          _adjustListener?.adjustChangeToBuyUser();
-        }
+      if(network.isNotEmpty&&!network.contains("Organic")&&null==localAdjustIsBuyUser()){
+        LocalStorage.write(LocalStorageKey.localAdjustIsBuyUserKey, true);
+        _adjustListener?.adjustChangeToBuyUser();
       }
       _adjustListener?.adjustResultCall(network);
     };
@@ -39,12 +41,6 @@ class RequestAdjust{
     };
     Adjust.start(adjustConfig);
     _adjustListener?.startRequestAdjust();
-  }
-
-  String getLocalAdjust()=>LocalStorage.read<String>(LocalStorageKey.adjustLocalKey)??"";
-
-  bool isBuyUser(){
-    var localAdjust = getLocalAdjust();
-    return localAdjust.isNotEmpty&&!localAdjust.contains("Organic");
+    printLogByDebug("request adjust result ---> startRequestAdjust");
   }
 }
