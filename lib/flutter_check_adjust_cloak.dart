@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_check_adjust_cloak/adjust/adjust_listener.dart';
 import 'package:flutter_check_adjust_cloak/adjust/request_adjust.dart';
 import 'package:flutter_check_adjust_cloak/cloak/request_cloak.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage.dart';
@@ -13,16 +14,21 @@ class FlutterCheckAdjustCloak {
   RequestAdjust? _requestAdjust;
   bool _forceBuyUser=false;
 
-  ///set configuration
-  setConfigAndInit({
+  ///initCloak
+  initCloak({
     required String cloakPath,
     required String normalModeStr,
-    required String blackModeStr,
-    required String adjustToken,
-    required String distinctId,
+    required String blackModeStr
   }){
     _requestCloak=RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr);
     _requestCloak?.request();
+  }
+
+  ///initAdjust
+  initAdjust({
+    required String adjustToken,
+    required String distinctId,
+  }){
     _requestAdjust=RequestAdjust(adjustToken: adjustToken, distinctId: distinctId);
     _requestAdjust?.request();
   }
@@ -61,5 +67,13 @@ class FlutterCheckAdjustCloak {
     if(kDebugMode){
       _forceBuyUser=force;
     }
+  }
+
+  String getLocalCloakStr()=>_requestCloak?.getLocalCloak()??"";
+
+  String getLocalAdjustStr()=>_requestAdjust?.getLocalAdjust()??"";
+
+  setAdjustListener(AdjustListener adjustListener){
+    _requestAdjust?.setAdjustListener(adjustListener);
   }
 }

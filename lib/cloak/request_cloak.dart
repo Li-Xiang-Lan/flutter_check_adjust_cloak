@@ -20,6 +20,7 @@ class RequestCloak{
     if(_requestNum>=20||getLocalCloak().isNotEmpty){
       return;
     }
+    printLogByDebug("start request cloak --> $cloakPath");
     var result = await DioManager.instance.requestGet(url: cloakPath);
     printLogByDebug("request cloak result--> $result");
     if(result.isNotEmpty&&(result==normalModeStr||result==blackModeStr)){
