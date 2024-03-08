@@ -43,6 +43,8 @@ buildTypes {
 
 Default support for session tracking on iOS devices, To set up session tracking for Android devices, you can globally set it on the homepage or set it according to each widget
 ```dart
+import 'package:adjust_sdk/adjust.dart';
+
 class MainScreen extends StatefulWidget {
   @override
   State createState() => new MainScreenState();
@@ -72,7 +74,7 @@ class MainScreenState extends State<mainscreen> with WidgetsBindingObserver {
       case AppLifecycleState.paused:
         Adjust.onPause();
         break;
-      case AppLifecycleState.suspending:
+      default:
         break;
     }
   }
