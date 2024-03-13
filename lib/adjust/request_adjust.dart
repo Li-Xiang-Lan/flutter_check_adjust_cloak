@@ -4,6 +4,7 @@ import 'package:adjust_sdk/adjust_config.dart';
 import 'package:adjust_sdk/adjust_event_success.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_check_adjust_cloak/adjust/adjust_listener.dart';
+import 'package:flutter_check_adjust_cloak/flutter_check_adjust_cloak.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage_key.dart';
 import 'package:flutter_check_adjust_cloak/util/utils.dart';
@@ -20,9 +21,6 @@ class RequestAdjust{
   }
 
   request()async{
-    if(null!=localAdjustIsBuyUser()){
-      return;
-    }
     _adjustListener?.beforeRequestAdjust();
     printLogByDebug("request adjust result ---> beforeRequestAdjust");
     Adjust.addSessionCallbackParameter("customer_user_id", distinctId);
@@ -30,7 +28,7 @@ class RequestAdjust{
     adjustConfig.attributionCallback=(AdjustAttribution attributionChangedData) {
       var network = attributionChangedData.network??"";
       printLogByDebug("request adjust result ---> $network");
-      if(network.isNotEmpty&&!network.contains("Organic")&&null==localAdjustIsBuyUser()){
+      if(network.isNotEmpty&&!network.contains("Organic")&&null==FlutterCheckAdjustCloak.instance.localAdjustIsBuyUser()){
         LocalStorage.write(LocalStorageKey.localAdjustIsBuyUserKey, true);
         _adjustListener?.adjustChangeToBuyUser();
       }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_check_adjust_cloak/flutter_check_adjust_cloak.dart';
-import 'package:flutter_tba_info/flutter_tba_info.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,8 +29,8 @@ class _MyAppState extends State<MyApp> {
                   onPressed: ()async{
                     // FlutterCheckAdjustCloak.instance.setConfigAndInit(
                     //     cloakPath: url,
-                    //     normalModeStr: "alluvium",
-                    //     blackModeStr: "trigram",
+                    //     normalModeStr: "",
+                    //     blackModeStr: "",
                     //     adjustToken: "",
                     //     distinctId: distinctId
                     // );
@@ -49,6 +48,19 @@ class _MyAppState extends State<MyApp> {
                     FlutterCheckAdjustCloak.instance.forceBuyUser(true);
                   },
                   child: const Text("force buy user",style: TextStyle(fontSize: 20),)
+              ),
+              TextButton(
+                  onPressed: ()async{
+
+                  },
+                  child: const Text("init firebase",style: TextStyle(fontSize: 20),)
+              ),
+              TextButton(
+                  onPressed: ()async{
+                    var bool = await FlutterCheckAdjustCloak.instance.checkHasSim();
+                    print("kk===${bool}");
+                  },
+                  child: const Text("getFirebaseConf",style: TextStyle(fontSize: 20),)
               ),
             ],
           ),

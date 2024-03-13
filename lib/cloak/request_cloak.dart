@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_check_adjust_cloak/dio/dio_manager.dart';
+import 'package:flutter_check_adjust_cloak/flutter_check_adjust_cloak.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage_key.dart';
 import 'package:flutter_check_adjust_cloak/util/utils.dart';
@@ -17,7 +18,7 @@ class RequestCloak{
   });
 
   request()async{
-    if(_requestNum>=20||null==localCloakIsNormalUser()){
+    if(_requestNum>=20||null!=FlutterCheckAdjustCloak.instance.localCloakIsNormalUser()){
       return;
     }
     printLogByDebug("start request cloak --> $cloakPath");

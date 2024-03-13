@@ -37,4 +37,26 @@ class DioManager{
       return "";
     }
   }
+
+  Future<String> requestPost({
+    required String url,
+    required Map<String, dynamic> dataMap,
+    Map<String, dynamic>? headerMap,
+})async{
+    _dio?.options.headers = headerMap;
+    try{
+      var response = await _dio?.request<String>(
+          url,
+          data: dataMap,
+          options: Options(method: "post")
+      );
+      if(response?.statusCode==200){
+        return response?.data?.toString()??"";
+      }else{
+        return "";
+      }
+    }catch(e){
+      return "";
+    }
+  }
 }

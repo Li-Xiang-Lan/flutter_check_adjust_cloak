@@ -10,8 +10,8 @@ class MethodChannelFlutterCheckAdjustCloak extends FlutterCheckAdjustCloakPlatfo
   final methodChannel = const MethodChannel('flutter_check_adjust_cloak');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
+  Future<bool> checkHasSim() async{
+    return await methodChannel.invokeMethod("checkHasSim");
   }
 }
+

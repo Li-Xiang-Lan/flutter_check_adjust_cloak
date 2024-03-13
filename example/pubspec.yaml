@@ -16,7 +16,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_tba_info: 0.0.5
 
   flutter_check_adjust_cloak:
     # When depending on this package from a real application you should use:

@@ -81,17 +81,44 @@ class MainScreenState extends State<mainscreen> with WidgetsBindingObserver {
 }
 ```
 
+### Configure firebase data
+
+#### Android 
+1.copy `google-services.json` in your project->android->app
+2.in your app->`build.gradle`, add `apply plugin: 'com.google.gms.google-services'`
+example
+```dart
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+```
+3.in your project->`build.gradle`->`buildscript`->`dependencies` ,add ` classpath 'com.google.gms:google-services:4.3.15'`
+example
+```dart
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+```
+
+#### iOS
+use xCode open ios project,right click `Runner`,choose `Add files to "Runner"`, and choose your `GoogleService-Info.plist`
+
 ### Examples
 
 1.Init
 ```dart
-FlutterCheckAdjustCloak.instance.setConfigAndInit(
-    cloakPath: cloakPath,
-    normalModeStr: normalModeStr,
-    blackModeStr: blackModeStr,
-    adjustToken: adjustToken,
-    distinctId: distinctId)
-;
+ FlutterCheckAdjustCloak.instance.initCheck(
+cloakPath: path,
+normalModeStr: "",
+blackModeStr: "",
+adjustToken: "",
+distinctId: distinctId,
+unknownFirebaseKey: "",
+referrerConfKey: "",
+adjustListener: this
+);
 ```
 2.Check type, callback true means buy user ,false means not
 ```dart
@@ -101,6 +128,10 @@ FlutterCheckAdjustCloak.instance.checkType();
 3.Force buy user,just debug mode effective
 ```dart
 FlutterCheckAdjustCloak.instance.forceBuyUser(true);
+```
+4.if you want test firebase
+```dart
+FlutterCheckAdjustCloak.instance.setTestFirebase(true);
 ```
 
 
