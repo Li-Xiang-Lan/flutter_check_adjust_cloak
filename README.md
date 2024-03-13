@@ -85,8 +85,11 @@ class MainScreenState extends State<mainscreen> with WidgetsBindingObserver {
 
 #### Android 
 1.copy `google-services.json` in your project->android->app
+
 2.in your app->`build.gradle`, add `apply plugin: 'com.google.gms.google-services'`
+
 example
+
 ```dart
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -94,12 +97,15 @@ apply plugin: 'com.google.gms.google-services'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 ```
 3.in your project->`build.gradle`->`buildscript`->`dependencies` ,add ` classpath 'com.google.gms:google-services:4.3.15'`
+
 example
+
 ```dart
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.google.gms.google-services'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+dependencies {
+    classpath 'com.android.tools.build:gradle:7.3.0'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath 'com.google.gms:google-services:4.3.15'
+}
 ```
 
 #### iOS
