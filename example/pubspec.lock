@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: f5628cd9c92ed11083f425fd1f8f1bc60ecdda458c81d73b143aeda036c35fe7
+      sha256: eb0ac20f704799b986049fbb3c1c16421eca319a1b872378d669513e12452ba5
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.3.16"
+    version: "1.3.14"
   adjust_sdk:
     dependency: transitive
     description:
@@ -109,10 +109,10 @@ packages:
     dependency: transitive
     description:
       name: firebase_core
-      sha256: "96607c0e829a581c2a483c658f04e8b159964c3bae2730f73297070bc85d40bb"
+      sha256: d301561d614487688d797717bef013a264c517d1d09e4c5c1325c3a64c835efb
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.24.2"
+    version: "2.24.0"
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -141,18 +141,18 @@ packages:
     dependency: transitive
     description:
       name: firebase_remote_config_platform_interface
-      sha256: "41813ef8dfbc40ef7a59a73f9e5acef2608dbcb2933241b6c03d52e90677040f"
+      sha256: "28b531ade258dbb6084fcf4905cef7f0e9c83574cb18e5010809a7016e157990"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.4.16"
+    version: "1.4.14"
   firebase_remote_config_web:
     dependency: transitive
     description:
       name: firebase_remote_config_web
-      sha256: "089e92f333c2fb2c05c640c80fecea9d1e06dada0ba85efe34a580987ef94a0a"
+      sha256: f11eaf48a081df69b753dafb969b0548d37881d4c4548dea3d12624cb338f44e
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.4.16"
+    version: "1.4.14"
   flutter:
     dependency: "direct main"
     description: flutter
