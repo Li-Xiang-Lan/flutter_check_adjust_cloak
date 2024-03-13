@@ -16,6 +16,7 @@ dependencies:
   get_storage: 2.1.1
   android_play_install_referrer: 0.3.0
   firebase_remote_config: 4.3.0
+  firebase_core: 2.24.0
 
 
 dev_dependencies:
