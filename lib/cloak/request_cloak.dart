@@ -21,7 +21,7 @@ class RequestCloak{
   });
 
   request()async{
-    if(_requestNum>=20||null!=FlutterCheckAdjustCloak.instance.localCloakIsNormalUser()){
+    if(_requestNum>=20){
       return;
     }
     if(_requestNum==0){
