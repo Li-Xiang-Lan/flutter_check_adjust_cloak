@@ -39,10 +39,8 @@ class FlutterCheckAdjustCloak {
     required CloakListener cloakListener,
   })async{
     await _initFirebase();
-    if(null==localCloakIsNormalUser()){
-      var requestCloak=RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr,cloakListener: cloakListener);
-      requestCloak.request();
-    }
+    var requestCloak=RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr,cloakListener: cloakListener);
+    requestCloak.request();
 
     var requestAdjust=RequestAdjust(adjustToken: adjustToken, distinctId: distinctId);
     requestAdjust.setAdjustListener(adjustListener);
