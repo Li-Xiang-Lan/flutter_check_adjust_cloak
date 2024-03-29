@@ -7,6 +7,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_check_adjust_cloak/adjust/adjust_listener.dart';
 import 'package:flutter_check_adjust_cloak/adjust/request_adjust.dart';
+import 'package:flutter_check_adjust_cloak/cloak/cloak_listener.dart';
 import 'package:flutter_check_adjust_cloak/cloak/request_cloak.dart';
 import 'package:flutter_check_adjust_cloak/flutter_check_adjust_cloak_platform_interface.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage.dart';
@@ -34,11 +35,12 @@ class FlutterCheckAdjustCloak {
     required String distinctId,
     required String unknownFirebaseKey,
     required String referrerConfKey,
-    required AdjustListener adjustListener
+    required AdjustListener adjustListener,
+    required CloakListener cloakListener,
   })async{
     await _initFirebase();
     if(null==localCloakIsNormalUser()){
-      var requestCloak=RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr);
+      var requestCloak=RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr,cloakListener: cloakListener);
       requestCloak.request();
     }
 

@@ -24,7 +24,7 @@ class RequestAdjust{
     _adjustListener?.beforeRequestAdjust();
     printLogByDebug("request adjust result ---> beforeRequestAdjust");
     Adjust.addSessionCallbackParameter("customer_user_id", distinctId);
-    var adjustConfig = AdjustConfig(kDebugMode?"ih2pm2dr3k74":adjustToken, kDebugMode?AdjustEnvironment.sandbox:AdjustEnvironment.production);
+    var adjustConfig = AdjustConfig(adjustToken, kDebugMode?AdjustEnvironment.sandbox:AdjustEnvironment.production);
     adjustConfig.attributionCallback=(AdjustAttribution attributionChangedData) {
       var network = attributionChangedData.network??"";
       printLogByDebug("request adjust result ---> $network");

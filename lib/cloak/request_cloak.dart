@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_check_adjust_cloak/cloak/cloak_listener.dart';
 import 'package:flutter_check_adjust_cloak/dio/dio_manager.dart';
 import 'package:flutter_check_adjust_cloak/flutter_check_adjust_cloak.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage.dart';
@@ -9,22 +10,30 @@ class RequestCloak{
   String cloakPath;
   String normalModeStr;
   String blackModeStr;
+  CloakListener cloakListener;
   var _requestNum=0;
 
   RequestCloak({
     required this.cloakPath,
     required this.normalModeStr,
-    required this.blackModeStr
+    required this.blackModeStr,
+    required this.cloakListener,
   });
 
   request()async{
     if(_requestNum>=20||null!=FlutterCheckAdjustCloak.instance.localCloakIsNormalUser()){
       return;
     }
+    if(_requestNum==0){
+      cloakListener.firstRequestCloak();
+    }
     printLogByDebug("start request cloak --> $cloakPath");
     var result = await DioManager.instance.requestGet(url: cloakPath);
     printLogByDebug("request cloak result--> $result");
     if(result.isNotEmpty&&(result==normalModeStr||result==blackModeStr)){
+      if(_requestNum==0){
+        cloakListener.firstRequestCloakSuccess();
+      }
       LocalStorage.write(LocalStorageKey.localCloakIsNormalUserKey, result==normalModeStr);
     }else{
       Timer.periodic(const Duration(milliseconds: 1000), (timer) {
