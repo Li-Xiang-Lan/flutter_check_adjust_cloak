@@ -23,6 +23,7 @@ class FlutterCheckAdjustCloak {
   String _referrerStr="";
   int _referrerRequestNum=0;
   String _userTypeFirebaseStr="";
+  String _adjustConfKey="0";
   final List<String> _referrerConfList=[];
   late FirebaseRemoteConfig _remoteConfig;
 
@@ -35,6 +36,7 @@ class FlutterCheckAdjustCloak {
     required String distinctId,
     required String unknownFirebaseKey,
     required String referrerConfKey,
+    required String adjustConfKey,
     required AdjustListener adjustListener,
     required CloakListener cloakListener,
   })async{
@@ -50,6 +52,7 @@ class FlutterCheckAdjustCloak {
     if(Platform.isAndroid){
       _hasSim=await checkHasSim();
       _userTypeFirebaseStr = await getFirebaseStrValue(unknownFirebaseKey);
+      _adjustConfKey = await getFirebaseStrValue(adjustConfKey);
       try{
         var referrerConf = await getFirebaseStrValue(referrerConfKey);
         _referrerConfList.clear();
@@ -119,7 +122,7 @@ class FlutterCheckAdjustCloak {
         printLogByDebug("check type result--->cloak isBlack");
         return false;
       }
-      if(!(localAdjustIsBuyUser()??false)){
+      if(_adjustConfKey=="1"&&!(localAdjustIsBuyUser()??false)){
         printLogByDebug("check type result--->adjust not buy user");
         return false;
       }
