@@ -12,6 +12,7 @@ import 'package:flutter_check_adjust_cloak/cloak/request_cloak.dart';
 import 'package:flutter_check_adjust_cloak/flutter_check_adjust_cloak_platform_interface.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage_key.dart';
+import 'package:flutter_check_adjust_cloak/util/firebase_listener.dart';
 import 'package:flutter_check_adjust_cloak/util/utils.dart';
 
 class FlutterCheckAdjustCloak {
@@ -26,6 +27,7 @@ class FlutterCheckAdjustCloak {
   String _adjustConfKey="0";
   final List<String> _referrerConfList=[];
   late FirebaseRemoteConfig _remoteConfig;
+  FirebaseListener? _firebaseListener;
 
   ///initCheck
   initCheck({
@@ -39,7 +41,9 @@ class FlutterCheckAdjustCloak {
     required String adjustConfKey,
     required AdjustListener adjustListener,
     required CloakListener cloakListener,
+    required FirebaseListener firebaseListener,
   })async{
+    _firebaseListener=firebaseListener;
     await _initFirebase();
     var requestCloak=RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr,cloakListener: cloakListener);
     requestCloak.request();
@@ -52,12 +56,13 @@ class FlutterCheckAdjustCloak {
     if(Platform.isAndroid){
       _hasSim=await checkHasSim();
       _userTypeFirebaseStr = await getFirebaseStrValue(unknownFirebaseKey);
-      _adjustConfKey = await getFirebaseStrValue(adjustConfKey);
       try{
         var referrerConf = await getFirebaseStrValue(referrerConfKey);
         _referrerConfList.clear();
         _referrerConfList.addAll(referrerConf.split("|"));
       }catch(e){}
+    }else{
+      _adjustConfKey = await getFirebaseStrValue(adjustConfKey);
     }
   }
 
@@ -92,6 +97,8 @@ class FlutterCheckAdjustCloak {
         minimumFetchInterval: const Duration(seconds: 1),
       ),
     );
+    await _remoteConfig.fetchAndActivate();
+    _firebaseListener?.initFirebaseSuccess();
   }
 
 
@@ -100,7 +107,6 @@ class FlutterCheckAdjustCloak {
     if(kDebugMode&&!_testFirebase){
       return "";
     }
-    await _remoteConfig.fetchAndActivate();
     return _remoteConfig.getString(key);
   }
 
