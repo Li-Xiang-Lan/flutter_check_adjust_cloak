@@ -159,6 +159,8 @@ class FlutterCheckAdjustCloak {
     return true;
   }
 
+  bool getUserType()=>LocalStorage.read<bool>(LocalStorageKey.localUserType)??false;
+
   bool _checkUnknownUser(){
     var b=_userTypeFirebaseStr=="B";
     printLogByDebug("check type result--->firebase config is $_userTypeFirebaseStr");
