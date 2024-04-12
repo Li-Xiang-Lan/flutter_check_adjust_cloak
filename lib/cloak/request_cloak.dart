@@ -27,9 +27,9 @@ class RequestCloak{
     cloakListener.firstRequestCloak();
     printLogByDebug("request cloak result--> $cloakPath");
     var result = await DioManager.instance.requestGet(url: cloakPath);
-    printLogByDebug("request cloak result--> $result");
-    if(result.isNotEmpty&&(result==normalModeStr||result==blackModeStr)){
-      LocalStorage.write(LocalStorageKey.localCloakIsNormalUserKey, result==normalModeStr);
+    printLogByDebug("request cloak result--> ${result.result}");
+    if(result.success&&(result.result==normalModeStr||result.result==blackModeStr)){
+      LocalStorage.write(LocalStorageKey.localCloakIsNormalUserKey, result.result==normalModeStr);
       cloakListener.firstRequestCloakSuccess();
     }else{
       Future.delayed(const Duration(milliseconds: 1000),(){

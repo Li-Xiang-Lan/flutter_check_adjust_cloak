@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_check_adjust_cloak/dio/dio_result.dart';
 
 class DioManager{
   factory DioManager() => _getInstance();
@@ -22,27 +23,27 @@ class DioManager{
 
   Dio? _dio;
 
-  Future<String> requestGet({required String url}) async{
+  Future<DioResult> requestGet({required String url}) async{
     try{
       var response = await _dio?.request<String>(
           url,
           options: Options(method: "get")
       );
       if(response?.statusCode==200){
-        return response?.data?.toString()??"";
+        return DioResult(success: true, result: response?.data?.toString()??"");
       }else{
-        return "";
+        return DioResult(success: false, result: "");
       }
     }catch(e){
-      return "";
+      return DioResult(success: false, result: "");
     }
   }
 
-  Future<String> requestPost({
+  Future<DioResult> requestPost({
     required String url,
     required Map<String, dynamic> dataMap,
     Map<String, dynamic>? headerMap,
-})async{
+  })async{
     _dio?.options.headers = headerMap;
     try{
       var response = await _dio?.request<String>(
@@ -51,12 +52,12 @@ class DioManager{
           options: Options(method: "post")
       );
       if(response?.statusCode==200){
-        return response?.data?.toString()??"";
+        return DioResult(success: true, result: response?.data?.toString()??"");
       }else{
-        return "";
+        return DioResult(success: false, result: "");
       }
     }catch(e){
-      return "";
+      return DioResult(success: false, result: "");
     }
   }
 }
