@@ -48,7 +48,6 @@ class FlutterCheckAdjustCloak {
     RequestReferrer();
 
     var initFirebaseResult = await _initFirebase();
-    print("kk====${initFirebaseResult}");
     if(initFirebaseResult){
       if(Platform.isAndroid){
         _hasSim=await checkHasSim();
@@ -85,10 +84,14 @@ class FlutterCheckAdjustCloak {
 
   ///getFirebaseStrValue
   Future<String> getFirebaseStrValue(String key)async{
-    if(key.isEmpty){
+    try{
+      if(key.isEmpty){
+        return "";
+      }
+      return _remoteConfig.getString(key);
+    }catch(e){
       return "";
     }
-    return _remoteConfig.getString(key);
   }
 
   ///check type
