@@ -48,6 +48,7 @@ class FlutterCheckAdjustCloak {
     RequestReferrer();
 
     var initFirebaseResult = await _initFirebase();
+    print("kk====${initFirebaseResult}");
     if(initFirebaseResult){
       if(Platform.isAndroid){
         _hasSim=await checkHasSim();
@@ -64,17 +65,21 @@ class FlutterCheckAdjustCloak {
   }
 
   Future<bool> _initFirebase()async{
-    await Firebase.initializeApp();
-    _remoteConfig=FirebaseRemoteConfig.instance;
-    await _remoteConfig.setConfigSettings(
-      RemoteConfigSettings(
-        fetchTimeout: const Duration(seconds: 10),
-        minimumFetchInterval: const Duration(seconds: 1),
-      ),
-    );
-    await _remoteConfig.fetchAndActivate();
-    _firebaseListener?.initFirebaseSuccess();
-    return true;
+    try{
+      await Firebase.initializeApp();
+      _remoteConfig=FirebaseRemoteConfig.instance;
+      await _remoteConfig.setConfigSettings(
+        RemoteConfigSettings(
+          fetchTimeout: const Duration(seconds: 10),
+          minimumFetchInterval: const Duration(seconds: 1),
+        ),
+      );
+      await _remoteConfig.fetchAndActivate();
+      _firebaseListener?.initFirebaseSuccess();
+      return true;
+    }catch(e){
+      return false;
+    }
   }
 
 
