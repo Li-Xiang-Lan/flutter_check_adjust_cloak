@@ -18,9 +18,11 @@ class RequestCloak{
     required this.normalModeStr,
     required this.blackModeStr,
     required this.cloakListener,
-  });
+  }){
+    _request();
+  }
 
-  request()async{
+  _request()async{
     if(_requestNum>=20){
       return;
     }
@@ -34,7 +36,7 @@ class RequestCloak{
     }else{
       Future.delayed(const Duration(milliseconds: 1000),(){
         _requestNum++;
-        request();
+        _request();
       });
     }
   }

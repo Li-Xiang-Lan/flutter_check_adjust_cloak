@@ -14,16 +14,18 @@ import 'package:flutter_check_adjust_cloak/util/utils.dart';
 class RequestAdjust{
   String adjustToken;
   String distinctId;
-  AdjustListener? _adjustListener;
+  AdjustListener adjustListener;
 
-  RequestAdjust({required this.adjustToken,required this.distinctId});
-
-  setAdjustListener(AdjustListener adjustListener){
-    _adjustListener=adjustListener;
+  RequestAdjust({
+    required this.adjustToken,
+    required this.distinctId,
+    required this.adjustListener,
+  }){
+    _request();
   }
 
-  request()async{
-    _adjustListener?.beforeRequestAdjust();
+  _request()async{
+    adjustListener.beforeRequestAdjust();
     printLogByDebug("request adjust result ---> beforeRequestAdjust");
     Adjust.addSessionCallbackParameter("customer_user_id", distinctId);
     var adjustConfig = AdjustConfig(adjustToken, kDebugMode&&Platform.isAndroid?AdjustEnvironment.sandbox:AdjustEnvironment.production);
@@ -32,15 +34,15 @@ class RequestAdjust{
       printLogByDebug("request adjust result ---> $network");
       if(network.isNotEmpty&&!network.contains("Organic")&&null==FlutterCheckAdjustCloak.instance.localAdjustIsBuyUser()){
         LocalStorage.write(LocalStorageKey.localAdjustIsBuyUserKey, true);
-        _adjustListener?.adjustChangeToBuyUser();
+        adjustListener.adjustChangeToBuyUser();
       }
-      _adjustListener?.adjustResultCall(network);
+      adjustListener.adjustResultCall(network);
     };
     adjustConfig.eventSuccessCallback= (AdjustEventSuccess eventSuccessData) {
-      _adjustListener?.adjustEventCall(eventSuccessData);
+      adjustListener.adjustEventCall(eventSuccessData);
     };
     Adjust.start(adjustConfig);
-    _adjustListener?.startRequestAdjust();
+    adjustListener.startRequestAdjust();
     printLogByDebug("request adjust result ---> startRequestAdjust");
   }
 }

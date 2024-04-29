@@ -12,6 +12,7 @@ import 'package:flutter_check_adjust_cloak/cloak/request_cloak.dart';
 import 'package:flutter_check_adjust_cloak/flutter_check_adjust_cloak_platform_interface.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage_key.dart';
+import 'package:flutter_check_adjust_cloak/referrer/request_referrer.dart';
 import 'package:flutter_check_adjust_cloak/util/firebase_listener.dart';
 import 'package:flutter_check_adjust_cloak/util/utils.dart';
 
@@ -19,10 +20,8 @@ class FlutterCheckAdjustCloak {
   static final FlutterCheckAdjustCloak _instance = FlutterCheckAdjustCloak();
   static FlutterCheckAdjustCloak get instance => _instance;
 
-  bool _forceBuyUser=false,_testFirebase=false;
+  bool _forceBuyUser=false;
   bool _hasSim=false;
-  String _referrerStr="";
-  int _referrerRequestNum=0;
   String _userTypeFirebaseStr="";
   String _adjustConfKey="0";
   final List<String> _referrerConfList=[];
@@ -44,51 +43,27 @@ class FlutterCheckAdjustCloak {
     required FirebaseListener firebaseListener,
   })async{
     _firebaseListener=firebaseListener;
-    await _initFirebase();
-    var requestCloak=RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr,cloakListener: cloakListener);
-    requestCloak.request();
+    RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr,cloakListener: cloakListener);
+    RequestAdjust(adjustToken: adjustToken, distinctId: distinctId,adjustListener: adjustListener);
+    RequestReferrer();
 
-    var requestAdjust=RequestAdjust(adjustToken: adjustToken, distinctId: distinctId);
-    requestAdjust.setAdjustListener(adjustListener);
-    requestAdjust.request();
-
-    _initReferrer();
-    if(Platform.isAndroid){
-      _hasSim=await checkHasSim();
-      _userTypeFirebaseStr = await getFirebaseStrValue(unknownFirebaseKey);
-      try{
-        var referrerConf = await getFirebaseStrValue(referrerConfKey);
-        _referrerConfList.clear();
-        _referrerConfList.addAll(referrerConf.split("|"));
-      }catch(e){}
-    }else{
-      _adjustConfKey = await getFirebaseStrValue(adjustConfKey);
+    var initFirebaseResult = await _initFirebase();
+    if(initFirebaseResult){
+      if(Platform.isAndroid){
+        _hasSim=await checkHasSim();
+        _userTypeFirebaseStr = await getFirebaseStrValue(unknownFirebaseKey);
+        try{
+          var referrerConf = await getFirebaseStrValue(referrerConfKey);
+          _referrerConfList.clear();
+          _referrerConfList.addAll(referrerConf.split("|"));
+        }catch(e){}
+      }else{
+        _adjustConfKey = await getFirebaseStrValue(adjustConfKey);
+      }
     }
   }
 
-  ///initReferrer Just Android effective
-  _initReferrer()async{
-    if(Platform.isIOS||_referrerRequestNum>=15){
-      return;
-    }
-    var referrer = LocalStorage.read<String>(LocalStorageKey.localReferrerKey)??"";
-    if(referrer.isNotEmpty){
-      _referrerStr=referrer;
-      return;
-    }
-    try{
-      var referrerDetails = await AndroidPlayInstallReferrer.installReferrer;
-      _referrerStr=referrerDetails.installReferrer??"";
-    }catch(e){
-      _referrerRequestNum++;
-      _initReferrer();
-    }
-  }
-
-  _initFirebase()async{
-    if(kDebugMode&&!_testFirebase){
-      return;
-    }
+  Future<bool> _initFirebase()async{
     await Firebase.initializeApp();
     _remoteConfig=FirebaseRemoteConfig.instance;
     await _remoteConfig.setConfigSettings(
@@ -99,12 +74,13 @@ class FlutterCheckAdjustCloak {
     );
     await _remoteConfig.fetchAndActivate();
     _firebaseListener?.initFirebaseSuccess();
+    return true;
   }
 
 
   ///getFirebaseStrValue
   Future<String> getFirebaseStrValue(String key)async{
-    if(kDebugMode&&!_testFirebase){
+    if(key.isEmpty){
       return "";
     }
     return _remoteConfig.getString(key);
@@ -141,10 +117,11 @@ class FlutterCheckAdjustCloak {
         printLogByDebug("check type result--->cloak isBlack");
         return false;
       }
-      if(_referrerStr.isEmpty&&null==localAdjustIsBuyUser()){
+      if(getLocalReferrerStr().isEmpty&&null==localAdjustIsBuyUser()){
         return _checkUnknownUser();
       }else{
-        if(!checkIsBuyUser()){
+        var isBuyUser = checkReferrerBuyUser()||(localAdjustIsBuyUser()??false);
+        if(!isBuyUser){
           if(!checkReferrerBuyUser()&&!(localAdjustIsBuyUser()??false)){
             printLogByDebug("check type result--->referrer and adjust is false");
             return false;
@@ -177,11 +154,6 @@ class FlutterCheckAdjustCloak {
     }
   }
 
-  ///Set test firebase,Please configure the required data for firebase first
-  setTestFirebase(bool test){
-    _testFirebase=test;
-  }
-
   ///true=normal user
   ///false=black user
   ///null=no data
@@ -197,13 +169,14 @@ class FlutterCheckAdjustCloak {
   }
 
   bool checkReferrerBuyUser(){
+    var referrerStr = getLocalReferrerStr();
     if(_referrerConfList.isEmpty){
-      return _referrerStr.contains("adjust");
+      return referrerStr.contains("adjust");
     }
-    return _referrerConfList.indexWhere((element) => _referrerStr.contains(element))>=0;
+    return _referrerConfList.indexWhere((element) => referrerStr.contains(element))>=0;
   }
 
-  bool checkIsBuyUser()=>checkReferrerBuyUser()||(localAdjustIsBuyUser()??false);
+  String getLocalReferrerStr()=>LocalStorage.read<String>(LocalStorageKey.localReferrerKey)??"";
 
   adjustPoint(String key){
     Adjust.trackEvent(AdjustEvent(key));
