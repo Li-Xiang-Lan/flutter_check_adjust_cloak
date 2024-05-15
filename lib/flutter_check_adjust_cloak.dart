@@ -23,7 +23,7 @@ class FlutterCheckAdjustCloak {
   bool _forceBuyUser=false;
   bool _hasSim=false;
   String _userTypeFirebaseStr="";
-  String _adjustConfKey="0";
+  String _adjustConfKey="1";
   final List<String> _referrerConfList=[];
   late FirebaseRemoteConfig _remoteConfig;
   FirebaseListener? _firebaseListener;
@@ -41,8 +41,10 @@ class FlutterCheckAdjustCloak {
     required AdjustListener adjustListener,
     required CloakListener cloakListener,
     required FirebaseListener firebaseListener,
+    String? adjustConfDefaultStr,
   })async{
     _firebaseListener=firebaseListener;
+    _adjustConfKey=adjustConfDefaultStr??"1";
     RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr,cloakListener: cloakListener);
     RequestAdjust(adjustToken: adjustToken, distinctId: distinctId,adjustListener: adjustListener);
     RequestReferrer();
