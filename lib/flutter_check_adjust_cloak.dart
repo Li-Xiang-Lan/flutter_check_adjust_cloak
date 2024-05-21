@@ -5,15 +5,13 @@ import 'package:adjust_sdk/adjust_event.dart';
 import 'package:android_play_install_referrer/android_play_install_referrer.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_check_adjust_cloak/adjust/adjust_listener.dart';
 import 'package:flutter_check_adjust_cloak/adjust/request_adjust.dart';
-import 'package:flutter_check_adjust_cloak/cloak/cloak_listener.dart';
 import 'package:flutter_check_adjust_cloak/cloak/request_cloak.dart';
 import 'package:flutter_check_adjust_cloak/flutter_check_adjust_cloak_platform_interface.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage.dart';
 import 'package:flutter_check_adjust_cloak/local_storage/local_storage_key.dart';
 import 'package:flutter_check_adjust_cloak/referrer/request_referrer.dart';
-import 'package:flutter_check_adjust_cloak/util/firebase_listener.dart';
+import 'package:flutter_check_adjust_cloak/util/check_listener.dart';
 import 'package:flutter_check_adjust_cloak/util/utils.dart';
 
 class FlutterCheckAdjustCloak {
@@ -26,7 +24,7 @@ class FlutterCheckAdjustCloak {
   String _adjustConfKey="1";
   final List<String> _referrerConfList=[];
   late FirebaseRemoteConfig _remoteConfig;
-  FirebaseListener? _firebaseListener;
+  CheckListener? _checkListener;
 
   ///initCheck
   initCheck({
@@ -38,15 +36,13 @@ class FlutterCheckAdjustCloak {
     required String unknownFirebaseKey,
     required String referrerConfKey,
     required String adjustConfKey,
-    required AdjustListener adjustListener,
-    required CloakListener cloakListener,
-    required FirebaseListener firebaseListener,
+    required CheckListener checkListener,
     String? adjustConfDefaultStr,
   })async{
-    _firebaseListener=firebaseListener;
+    _checkListener=checkListener;
     _adjustConfKey=adjustConfDefaultStr??"1";
-    RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr,cloakListener: cloakListener);
-    RequestAdjust(adjustToken: adjustToken, distinctId: distinctId,adjustListener: adjustListener);
+    RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr,checkListener: _checkListener);
+    RequestAdjust(adjustToken: adjustToken, distinctId: distinctId,checkListener: _checkListener);
     RequestReferrer();
 
     var initFirebaseResult = await _initFirebase();
@@ -76,7 +72,7 @@ class FlutterCheckAdjustCloak {
         ),
       );
       await _remoteConfig.fetchAndActivate();
-      _firebaseListener?.initFirebaseSuccess();
+      _checkListener?.initFirebaseSuccess();
       return true;
     }catch(e){
       return false;
