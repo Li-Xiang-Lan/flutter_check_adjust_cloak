@@ -39,4 +39,11 @@ class RequestCloak{
       });
     }
   }
+
+  requestAgain(){
+    if(_requestNum>=20){
+      _requestNum=0;
+      _request();
+    }
+  }
 }

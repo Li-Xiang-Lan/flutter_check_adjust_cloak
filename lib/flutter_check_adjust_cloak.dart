@@ -25,6 +25,7 @@ class FlutterCheckAdjustCloak {
   final List<String> _referrerConfList=[];
   late FirebaseRemoteConfig _remoteConfig;
   CheckListener? _checkListener;
+  RequestCloak? _requestCloak;
 
   ///initCheck
   initCheck({
@@ -41,7 +42,7 @@ class FlutterCheckAdjustCloak {
   })async{
     _checkListener=checkListener;
     _adjustConfKey=adjustConfDefaultStr??"1";
-    RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr,checkListener: _checkListener);
+    _requestCloak=RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr,checkListener: _checkListener);
     RequestAdjust(adjustToken: adjustToken, distinctId: distinctId,checkListener: _checkListener);
     RequestReferrer();
 
@@ -186,5 +187,9 @@ class FlutterCheckAdjustCloak {
 
   adjustPoint(String key){
     Adjust.trackEvent(AdjustEvent(key));
+  }
+
+  requestCloakAgain(){
+    _requestCloak?.requestAgain();
   }
 }
