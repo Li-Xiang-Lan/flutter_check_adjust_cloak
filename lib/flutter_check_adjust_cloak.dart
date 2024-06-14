@@ -143,7 +143,12 @@ class FlutterCheckAdjustCloak {
     return true;
   }
 
-  bool getUserType()=>LocalStorage.read<bool>(LocalStorageKey.localUserType)??false;
+  bool getUserType(){
+    if(_forceBuyUser){
+      return true;
+    }
+    return LocalStorage.read<bool>(LocalStorageKey.localUserType)??false;
+  }
 
   bool _checkUnknownUser(){
     var b=_userTypeFirebaseStr=="B";
