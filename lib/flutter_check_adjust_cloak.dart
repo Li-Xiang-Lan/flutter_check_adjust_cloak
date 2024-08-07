@@ -194,7 +194,7 @@ class FlutterCheckAdjustCloak {
     Adjust.trackEvent(AdjustEvent(key));
   }
 
-  requestCloakAgain(){
-    _requestCloak?.requestAgain();
-  }
+  // requestCloakAgain(){
+  //   _requestCloak?.requestAgain();
+  // }
 }

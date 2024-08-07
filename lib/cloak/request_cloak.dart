@@ -10,7 +10,7 @@ class RequestCloak{
   String normalModeStr;
   String blackModeStr;
   CheckListener? checkListener;
-  var _requestNum=0;
+  // var _requestNum=0;
 
   RequestCloak({
     required this.cloakPath,
@@ -22,9 +22,9 @@ class RequestCloak{
   }
 
   _request()async{
-    if(_requestNum>=20){
-      return;
-    }
+    // if(_requestNum>=20){
+    //   return;
+    // }
     checkListener?.firstRequestCloak();
     printLogByDebug("request cloak result--> $cloakPath");
     var result = await DioManager.instance.requestGet(url: cloakPath);
@@ -33,17 +33,17 @@ class RequestCloak{
       LocalStorage.write(LocalStorageKey.localCloakIsNormalUserKey, result.result==normalModeStr);
       checkListener?.firstRequestCloakSuccess();
     }else{
-      Future.delayed(const Duration(milliseconds: 1000),(){
-        _requestNum++;
+      Future.delayed(const Duration(milliseconds: 2000),(){
+        // _requestNum++;
         _request();
       });
     }
   }
 
-  requestAgain(){
-    if(_requestNum>=20){
-      _requestNum=0;
-      _request();
-    }
-  }
+  // requestAgain(){
+  //   if(_requestNum>=20){
+  //     _requestNum=0;
+  //     _request();
+  //   }
+  // }
 }
