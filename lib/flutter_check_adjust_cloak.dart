@@ -18,8 +18,7 @@ class FlutterCheckAdjustCloak {
   static final FlutterCheckAdjustCloak _instance = FlutterCheckAdjustCloak();
   static FlutterCheckAdjustCloak get instance => _instance;
 
-  bool _forceBuyUser=false;
-  bool _hasSim=false;
+  bool _forceBuyUser=false,_hasSim=false,_isB=false;
   String _userTypeFirebaseStr="";
   String _adjustConfKey="1";
   final List<String> _referrerConfList=[];
@@ -101,53 +100,61 @@ class FlutterCheckAdjustCloak {
       printLogByDebug("check type result--->forceBuyUser");
       return true;
     }
-    var isB = LocalStorage.read<bool>(LocalStorageKey.localUserType)??false;
-    if(isB){
-      printLogByDebug("check type result--->local storage is true");
-      return true;
-    }
+    // var isB = LocalStorage.read<bool>(LocalStorageKey.localUserType)??false;
+    // if(isB){
+    //   printLogByDebug("check type result--->local storage is true");
+    //   return true;
+    // }
     if(Platform.isIOS){
       if(!(localCloakIsNormalUser()??false)){
         printLogByDebug("check type result--->cloak isBlack");
-        return false;
+        _isB=false;
+        return _isB;
       }
       if(_adjustConfKey=="1"&&!(localAdjustIsBuyUser()??false)){
         printLogByDebug("check type result--->adjust not buy user");
-        return false;
+        _isB=false;
+        return _isB;
       }
     }else{
       if(!_hasSim){
         printLogByDebug("check type result--->no sim");
-        return false;
+        _isB=false;
+        return _isB;
       }
       if(!(localCloakIsNormalUser()??false)){
         printLogByDebug("check type result--->cloak isBlack");
-        return false;
+        _isB=false;
+        return _isB;
       }
       if(getLocalReferrerStr().isEmpty&&null==localAdjustIsBuyUser()){
-        return _checkUnknownUser();
+        _isB=_checkUnknownUser();
+        return _isB;
       }else{
         var isBuyUser = checkReferrerBuyUser()||(localAdjustIsBuyUser()??false);
         if(!isBuyUser){
           if(!checkReferrerBuyUser()&&!(localAdjustIsBuyUser()??false)){
             printLogByDebug("check type result--->referrer and adjust is false");
-            return false;
+            _isB=false;
+            return _isB;
           }else{
-            return _checkUnknownUser();
+            _isB=_checkUnknownUser();
+            return _isB;
           }
         }
       }
     }
     printLogByDebug("check type result--->is b");
-    LocalStorage.write(LocalStorageKey.localUserType, true);
-    return true;
+    // LocalStorage.write(LocalStorageKey.localUserType, true);
+    _isB=true;
+    return _isB;
   }
 
   bool getUserType(){
     if(_forceBuyUser){
       return true;
     }
-    return LocalStorage.read<bool>(LocalStorageKey.localUserType)??false;
+    return _isB;
   }
 
   bool _checkUnknownUser(){
