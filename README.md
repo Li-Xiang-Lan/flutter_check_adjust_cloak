@@ -6,6 +6,8 @@ A new Flutter project.
 
 ### Set Proguard
 
+0.2.4 -> c37 wordland
+
 Create `proguard-rules.pro` file into your android->app, add content in this file
 ```dart
 -keep public class com.adjust.sdk.**{ *; }

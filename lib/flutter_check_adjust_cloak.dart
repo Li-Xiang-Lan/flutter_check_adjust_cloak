@@ -117,32 +117,37 @@ class FlutterCheckAdjustCloak {
         return _isB;
       }
     }else{
-      if(!_hasSim){
-        printLogByDebug("check type result--->no sim");
-        _isB=false;
-        return _isB;
-      }
+      // if(!_hasSim){
+      //   printLogByDebug("check type result--->no sim");
+      //   _isB=false;
+      //   return _isB;
+      // }
       if(!(localCloakIsNormalUser()??false)){
         printLogByDebug("check type result--->cloak isBlack");
         _isB=false;
         return _isB;
       }
-      if(getLocalReferrerStr().isEmpty&&null==localAdjustIsBuyUser()){
-        _isB=_checkUnknownUser();
+      if(localAdjustIsBuyUser()??false){
+        printLogByDebug("check type result--->adjust is false");
+        _isB=false;
         return _isB;
-      }else{
-        var isBuyUser = checkReferrerBuyUser()||(localAdjustIsBuyUser()??false);
-        if(!isBuyUser){
-          if(!checkReferrerBuyUser()&&!(localAdjustIsBuyUser()??false)){
-            printLogByDebug("check type result--->referrer and adjust is false");
-            _isB=false;
-            return _isB;
-          }else{
-            _isB=_checkUnknownUser();
-            return _isB;
-          }
-        }
       }
+      // if(getLocalReferrerStr().isEmpty&&null==localAdjustIsBuyUser()){
+      //   _isB=_checkUnknownUser();
+      //   return _isB;
+      // }else{
+      //   var isBuyUser = checkReferrerBuyUser()||(localAdjustIsBuyUser()??false);
+      //   if(!isBuyUser){
+      //     if(!checkReferrerBuyUser()&&!(localAdjustIsBuyUser()??false)){
+      //       printLogByDebug("check type result--->referrer and adjust is false");
+      //       _isB=false;
+      //       return _isB;
+      //     }else{
+      //       _isB=_checkUnknownUser();
+      //       return _isB;
+      //     }
+      //   }
+      // }
     }
     printLogByDebug("check type result--->is b");
     // LocalStorage.write(LocalStorageKey.localUserType, true);
