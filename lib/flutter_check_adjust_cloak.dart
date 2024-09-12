@@ -160,6 +160,13 @@ class FlutterCheckAdjustCloak {
     if(_forceBuyUser){
       return true;
     }
+    if(Platform.isAndroid){
+      var isB = LocalStorage.read<bool>(LocalStorageKey.localUserType)??false;
+      if(isB){
+        _isB=true;
+        return _isB;
+      }
+    }
     return _isB;
   }
 
