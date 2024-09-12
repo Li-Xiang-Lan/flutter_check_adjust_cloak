@@ -101,12 +101,12 @@ class FlutterCheckAdjustCloak {
       return true;
     }
     if(Platform.isIOS){
-      if(!(localCloakIsNormalUser()??false)){
+      if(localCloakIsNormalUser()!=true){
         printLogByDebug("check type result--->cloak isBlack");
         _isB=false;
         return _isB;
       }
-      if(_adjustConfKey=="1"&&!(localAdjustIsBuyUser()??false)){
+      if(_adjustConfKey=="1"&&localAdjustIsBuyUser()!=true){
         printLogByDebug("check type result--->adjust not buy user");
         _isB=false;
         return _isB;
@@ -123,12 +123,12 @@ class FlutterCheckAdjustCloak {
       //   _isB=false;
       //   return _isB;
       // }
-      if(!(localCloakIsNormalUser()??false)){
+      if(localCloakIsNormalUser()!=true){
         printLogByDebug("check type result--->cloak isBlack");
         _isB=false;
         return _isB;
       }
-      if(localAdjustIsBuyUser()??false){
+      if(localAdjustIsBuyUser()!=true){
         printLogByDebug("check type result--->adjust is false");
         _isB=false;
         return _isB;
