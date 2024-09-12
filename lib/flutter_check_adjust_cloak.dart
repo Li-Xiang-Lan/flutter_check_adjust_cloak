@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:adjust_sdk/adjust.dart';
 import 'package:adjust_sdk/adjust_event.dart';
-import 'package:android_play_install_referrer/android_play_install_referrer.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_check_adjust_cloak/adjust/request_adjust.dart';
@@ -32,6 +31,7 @@ class FlutterCheckAdjustCloak {
     required String normalModeStr,
     required String blackModeStr,
     required String adjustToken,
+    required bool adjustSandbox,
     required String distinctId,
     required String unknownFirebaseKey,
     required String referrerConfKey,
@@ -42,7 +42,7 @@ class FlutterCheckAdjustCloak {
     _checkListener=checkListener;
     _adjustConfKey=adjustConfDefaultStr??"1";
     _requestCloak=RequestCloak(cloakPath: cloakPath, normalModeStr: normalModeStr, blackModeStr: blackModeStr,checkListener: _checkListener);
-    RequestAdjust(adjustToken: adjustToken, distinctId: distinctId,checkListener: _checkListener);
+    RequestAdjust(adjustToken: adjustToken, adjustSandbox: adjustSandbox,distinctId: distinctId,checkListener: _checkListener);
     RequestReferrer();
 
     var initFirebaseResult = await _initFirebase();

@@ -14,11 +14,13 @@ import 'package:flutter_check_adjust_cloak/util/utils.dart';
 class RequestAdjust{
   String adjustToken;
   String distinctId;
+  bool adjustSandbox;
   CheckListener? checkListener;
 
   RequestAdjust({
     required this.adjustToken,
     required this.distinctId,
+    required this.adjustSandbox,
     required this.checkListener,
   }){
     _request();
@@ -28,7 +30,7 @@ class RequestAdjust{
     checkListener?.beforeRequestAdjust();
     printLogByDebug("request adjust result ---> beforeRequestAdjust");
     Adjust.addSessionCallbackParameter("customer_user_id", distinctId);
-    var adjustConfig = AdjustConfig(adjustToken, kDebugMode&&Platform.isAndroid?AdjustEnvironment.sandbox:AdjustEnvironment.production);
+    var adjustConfig = AdjustConfig(adjustToken, adjustSandbox?AdjustEnvironment.sandbox:AdjustEnvironment.production);
     adjustConfig.attributionCallback=(AdjustAttribution attributionChangedData) {
       var network = attributionChangedData.network??"";
       printLogByDebug("request adjust result ---> $network");
