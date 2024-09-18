@@ -100,6 +100,12 @@ class FlutterCheckAdjustCloak {
       printLogByDebug("check type result--->forceBuyUser");
       return true;
     }
+    var isB = LocalStorage.read<bool>(LocalStorageKey.localUserType)??false;
+    if(isB){
+      printLogByDebug("check type result--->local storage is true");
+      _isB=true;
+      return _isB;
+    }
     if(Platform.isIOS){
       if(localCloakIsNormalUser()!=true){
         printLogByDebug("check type result--->cloak isBlack");
@@ -112,12 +118,6 @@ class FlutterCheckAdjustCloak {
         return _isB;
       }
     }else{
-      var isB = LocalStorage.read<bool>(LocalStorageKey.localUserType)??false;
-      if(isB){
-        printLogByDebug("check type result--->local storage is true");
-        _isB=true;
-        return _isB;
-      }
       // if(!_hasSim){
       //   printLogByDebug("check type result--->no sim");
       //   _isB=false;
@@ -160,12 +160,10 @@ class FlutterCheckAdjustCloak {
     if(_forceBuyUser){
       return true;
     }
-    if(Platform.isAndroid){
-      var isB = LocalStorage.read<bool>(LocalStorageKey.localUserType)??false;
-      if(isB){
-        _isB=true;
-        return _isB;
-      }
+    var isB = LocalStorage.read<bool>(LocalStorageKey.localUserType)??false;
+    if(isB){
+      _isB=true;
+      return _isB;
     }
     return _isB;
   }
