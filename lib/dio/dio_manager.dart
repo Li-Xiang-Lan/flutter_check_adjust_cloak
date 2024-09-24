@@ -60,4 +60,28 @@ class DioManager{
       return DioResult(success: false, result: "");
     }
   }
+
+  Future<DioResult> requestListPost({
+    required String url,
+    required List list,
+    String? contentType,
+    Map<String, dynamic>? headerMap,
+  })async{
+    _dio?.options.headers = headerMap;
+    _dio?.options.contentType=contentType??"application/json";
+    try{
+      var response = await _dio?.request<String>(
+          url,
+          data: list,
+          options: Options(method: "post")
+      );
+      if(response?.statusCode==200){
+        return DioResult(success: true, result: response?.data?.toString()??"");
+      }else{
+        return DioResult(success: false, result: "");
+      }
+    }catch(e){
+      return DioResult(success: false, result: "");
+    }
+  }
 }
