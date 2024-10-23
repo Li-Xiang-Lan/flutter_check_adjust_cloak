@@ -1,6 +1,6 @@
 name: flutter_check_adjust_cloak
 description: check adjust cloak
-version: 0.3.0
+version: 0.3.1
 homepage: https://github.com/Li-Xiang-Lan/flutter_check_adjust_cloak
 
 environment:
@@ -14,7 +14,7 @@ dependencies:
   adjust_sdk: 4.31.0
   dio: 5.3.3
   get_storage: 2.1.1
-  android_play_install_referrer: 0.3.0
+  android_play_install_referrer: 0.4.0
   firebase_remote_config: 5.0.4
   firebase_core: 3.3.0
 
