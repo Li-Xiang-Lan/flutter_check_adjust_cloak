@@ -6,7 +6,8 @@ A new Flutter project.
 
 ### Set Proguard
 
-0.2.4  0.2.5  0.2.6-> c37 
+0.3.1  no refer
+0.3.2  has refer
 
 Create `proguard-rules.pro` file into your android->app, add content in this file
 ```dart

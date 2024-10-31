@@ -133,22 +133,23 @@ class FlutterCheckAdjustCloak {
         _isB=false;
         return _isB;
       }
-      // if(getLocalReferrerStr().isEmpty&&null==localAdjustIsBuyUser()){
-      //   _isB=_checkUnknownUser();
-      //   return _isB;
-      // }else{
-      //   var isBuyUser = checkReferrerBuyUser()||(localAdjustIsBuyUser()??false);
-      //   if(!isBuyUser){
-      //     if(!checkReferrerBuyUser()&&!(localAdjustIsBuyUser()??false)){
-      //       printLogByDebug("check type result--->referrer and adjust is false");
-      //       _isB=false;
-      //       return _isB;
-      //     }else{
-      //       _isB=_checkUnknownUser();
-      //       return _isB;
-      //     }
-      //   }
-      // }
+
+      if(getLocalReferrerStr().isEmpty&&null==localAdjustIsBuyUser()){
+        _isB=_checkUnknownUser();
+        return _isB;
+      }else{
+        var isBuyUser = checkReferrerBuyUser()||(localAdjustIsBuyUser()??false);
+        if(!isBuyUser){
+          if(!checkReferrerBuyUser()&&!(localAdjustIsBuyUser()??false)){
+            printLogByDebug("check type result--->referrer and adjust is false");
+            _isB=false;
+            return _isB;
+          }else{
+            _isB=_checkUnknownUser();
+            return _isB;
+          }
+        }
+      }
     }
     printLogByDebug("check type result--->is b");
     LocalStorage.write(LocalStorageKey.localUserType, true);
