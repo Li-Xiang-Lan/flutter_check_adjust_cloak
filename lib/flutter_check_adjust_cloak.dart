@@ -128,11 +128,12 @@ class FlutterCheckAdjustCloak {
         _isB=false;
         return _isB;
       }
-      if(localAdjustIsBuyUser()!=true){
-        printLogByDebug("check type result--->adjust is false");
-        _isB=false;
-        return _isB;
-      }
+
+      // if(localAdjustIsBuyUser()!=true){
+      //   printLogByDebug("check type result--->adjust is false");
+      //   _isB=false;
+      //   return _isB;
+      // }
 
       if(getLocalReferrerStr().isEmpty&&null==localAdjustIsBuyUser()){
         _isB=_checkUnknownUser();
