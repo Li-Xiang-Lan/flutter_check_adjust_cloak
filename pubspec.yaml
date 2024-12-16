@@ -4,7 +4,7 @@ version: 0.3.3
 homepage: https://github.com/Li-Xiang-Lan/flutter_check_adjust_cloak
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
   flutter: ">=3.3.0"
 
 dependencies:
